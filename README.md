@@ -20,6 +20,10 @@ A curated list of awesome Model Context Protocol (MCP) servers.
 * [Frameworks](#frameworks)
 * [Utilities](#utilities)
 * [Tips & Tricks](#tips-and-tricks)
+* [Setting Up an MCP Server](#setting-up-an-mcp-server)
+* [Using an MCP Server](#using-an-mcp-server)
+* [Troubleshooting MCP Servers](#troubleshooting-mcp-servers)
+* [Advanced MCP Server Configurations](#advanced-mcp-server-configurations)
 
 ## What is MCP?
 
@@ -34,7 +38,7 @@ Checkout [awesome-mcp-clients](https://github.com/punkpeye/awesome-mcp-clients/)
 
 ## Tutorials
 
-* [Model Context Protocol (MCP) Quickstart](https://glama.ai/blog/2024-11-25-model-context-protocol-quickstart)
+* [Model Context Protocol (MCP) Quickstart](https://glama.ai/blog/2024-11-25/model-context-protocol-quickstart)
 * [Setup Claude Desktop App to Use a SQLite Database](https://youtu.be/wxCCzo9dGj0)
 
 ## Community
@@ -748,12 +752,191 @@ Now Claude can answer questions about writing MCP servers and how they work
 
 - https://www.reddit.com/r/ClaudeAI/comments/1h3g01r/want_to_ask_claude_about_model_context_protocol/
 
-## Star History
+## Setting Up an MCP Server
 
-<a href="https://star-history.com/#punkpeye/awesome-mcp-servers&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=punkpeye/awesome-mcp-servers&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=punkpeye/awesome-mcp-servers&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=punkpeye/awesome-mcp-servers&type=Date" />
- </picture>
-</a>
+Setting up an MCP server involves several steps, including preparing your environment, installing necessary dependencies, and configuring the server. Below are the detailed steps to set up an MCP server:
+
+### Prerequisites
+
+1. **Operating System**: Ensure you are using a compatible operating system (macOS, Windows, or Linux).
+2. **Programming Language**: Install the required programming language (e.g., Python, TypeScript, Go, etc.).
+3. **Dependencies**: Install any necessary dependencies or libraries.
+
+### Installation Steps
+
+1. **Clone the Repository**: Clone the MCP server repository from GitHub.
+   ```bash
+   git clone https://github.com/your-repo/mcp-server.git
+   cd mcp-server
+   ```
+
+2. **Install Dependencies**: Install the required dependencies using the package manager for your programming language.
+   ```bash
+   # For Python
+   pip install -r requirements.txt
+
+   # For Node.js
+   npm install
+
+   # For Go
+   go mod tidy
+   ```
+
+3. **Configure the Server**: Configure the server settings as needed. This may involve setting environment variables, updating configuration files, etc.
+   ```bash
+   # Example for setting environment variables
+   export MCP_SERVER_PORT=8080
+   export MCP_SERVER_HOST=0.0.0.0
+   ```
+
+4. **Run the Server**: Start the MCP server.
+   ```bash
+   # For Python
+   python server.py
+
+   # For Node.js
+   npm start
+
+   # For Go
+   go run main.go
+   ```
+
+5. **Verify the Setup**: Verify that the server is running correctly by accessing the server endpoint or checking the server logs.
+
+## Using an MCP Server
+
+Once the MCP server is set up, you can start using it to interact with various resources. Below are some common use cases and examples of how to use an MCP server:
+
+### Example 1: File Access
+
+1. **Read a File**: Use the MCP server to read a file from the local file system.
+   ```python
+   import requests
+
+   response = requests.get('http://localhost:8080/files/read', params={'path': '/path/to/file.txt'})
+   print(response.text)
+   ```
+
+2. **Write to a File**: Use the MCP server to write data to a file.
+   ```python
+   import requests
+
+   data = {'path': '/path/to/file.txt', 'content': 'Hello, MCP!'}
+   response = requests.post('http://localhost:8080/files/write', json=data)
+   print(response.status_code)
+   ```
+
+### Example 2: Database Query
+
+1. **Execute a Query**: Use the MCP server to execute a database query.
+   ```python
+   import requests
+
+   query = 'SELECT * FROM users'
+   response = requests.get('http://localhost:8080/db/query', params={'query': query})
+   print(response.json())
+   ```
+
+### Example 3: API Integration
+
+1. **Call an API**: Use the MCP server to call an external API.
+   ```python
+   import requests
+
+   response = requests.get('http://localhost:8080/api/call', params={'url': 'https://api.example.com/data'})
+   print(response.json())
+   ```
+
+## Troubleshooting MCP Servers
+
+When working with MCP servers, you may encounter various issues. Below are some common issues and troubleshooting steps:
+
+### Issue 1: Server Not Starting
+
+1. **Check Logs**: Check the server logs for any error messages.
+2. **Verify Dependencies**: Ensure all dependencies are installed correctly.
+3. **Check Configuration**: Verify that the server configuration is correct.
+
+### Issue 2: Connection Issues
+
+1. **Check Network**: Ensure there are no network issues preventing the server from being accessed.
+2. **Verify Endpoint**: Verify that the correct server endpoint is being used.
+
+### Issue 3: API Errors
+
+1. **Check API Documentation**: Ensure that the API call is being made correctly according to the API documentation.
+2. **Verify Parameters**: Verify that all required parameters are being passed correctly.
+
+## Advanced MCP Server Configurations
+
+For advanced users, MCP servers can be configured and optimized for better performance and security. Below are some advanced configurations and optimizations:
+
+### Configuration 1: Load Balancing
+
+1. **Set Up Load Balancer**: Set up a load balancer to distribute traffic across multiple MCP server instances.
+   ```bash
+   # Example using Nginx
+   upstream mcp_servers {
+       server mcp-server1:8080;
+       server mcp-server2:8080;
+   }
+
+   server {
+       listen 80;
+       location / {
+           proxy_pass http://mcp_servers;
+       }
+   }
+   ```
+
+### Configuration 2: Security Enhancements
+
+1. **Enable HTTPS**: Configure the MCP server to use HTTPS for secure communication.
+   ```bash
+   # Example using OpenSSL to generate a self-signed certificate
+   openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+
+   # Configure the server to use the certificate
+   export MCP_SERVER_CERT=cert.pem
+   export MCP_SERVER_KEY=key.pem
+   ```
+
+2. **Implement Authentication**: Implement authentication mechanisms to secure access to the MCP server.
+   ```python
+   # Example using Basic Authentication in Python
+   from flask import Flask, request, jsonify
+   from functools import wraps
+
+   app = Flask(__name__)
+
+   def check_auth(username, password):
+       return username == 'admin' and password == 'secret'
+
+   def authenticate():
+       return jsonify({'message': 'Authentication required'}), 401
+
+   def requires_auth(f):
+       @wraps(f)
+       def decorated(*args, **kwargs):
+           auth = request.authorization
+           if not auth or not check_auth(auth.username, auth.password):
+               return authenticate()
+           return f(*args, **kwargs)
+       return decorated
+
+   @app.route('/secure-endpoint')
+   @requires_auth
+   def secure_endpoint():
+       return jsonify({'message': 'Secure data'})
+
+   if __name__ == '__main__':
+       app.run(ssl_context=('cert.pem', 'key.pem'))
+   ```
+
+### Configuration 3: Performance Tuning
+
+1. **Optimize Code**: Optimize the server code for better performance.
+2. **Use Caching**: Implement caching mechanisms to reduce the load on the server.
+3. **Monitor Performance**: Use monitoring tools to track server performance and identify bottlenecks.
+
+By following these steps and configurations, you can set up, use, troubleshoot, and optimize MCP servers effectively.
